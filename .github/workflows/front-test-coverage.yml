@@ -1,0 +1,32 @@
+name: CI - Front-end Tests and Coverage
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+
+  front-tests:
+    name: Tests Front-end (Node.js)
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out repository code
+      - uses: actions/checkout@v6
+      # Set up Node.js
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      # dependencies installation
+      - run: npm install
+        working-directory: front
+      # Run tests
+      - run: npm run test -- --watch=false --browsers=ChromeHeadless --code-coverage
+        working-directory: front
+    # Upload rapport Front
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report-front
+          path: front/coverage/bobapp/
