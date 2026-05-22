@@ -73,15 +73,11 @@ jobs:
         with:
           name: jacoco-report
           path: back/target/site/jacoco/
-          run-id: ${{ github.event.workflow_run.id }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
       # Download rapport coverage front
       - uses: actions/download-artifact@v4
         with:
           name: coverage-report-front
           path: front/coverage/bobapp/
-          run-id: ${{ github.event.workflow_run.id }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
       # Run SonarCloud analysis
       - uses: SonarSource/sonarqube-scan-action@v5
         env:
