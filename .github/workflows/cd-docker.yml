@@ -19,17 +19,25 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+    
+      - name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_OUTPUT
 
       - name: Build and Push back
         uses: docker/build-push-action@v6
         with:
           context: back
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/bobapp-back:latest
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/bobapp-back:latest
+            ${{ secrets.DOCKER_USERNAME }}/bobapp-back:${{ steps.date.outputs.date }}
 
       - name: Build and Push front
         uses: docker/build-push-action@v6
         with:
           context: front
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/bobapp-front:latest
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/bobapp-front:latest
+            ${{ secrets.DOCKER_USERNAME }}/bobapp-front:${{ steps.date.outputs.date }}
