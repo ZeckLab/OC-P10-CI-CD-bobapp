@@ -2,7 +2,7 @@ name: CI - Tests and Coverage - Sonar Analysis
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, develop, test/sonar-without-artifacts ]
   pull_request:
     branches: [ main, develop ]
 
@@ -68,16 +68,6 @@ jobs:
       # Run compilation to generate files for SonarCloud
       - run: mvn clean compile
         working-directory: back
-      # Download rapport JaCoCo
-      - uses: actions/download-artifact@v4
-        with:
-          name: jacoco-report
-          path: back/target/site/jacoco/
-      # Download rapport coverage front
-      - uses: actions/download-artifact@v4
-        with:
-          name: coverage-report-front
-          path: front/coverage/bobapp/
       # Run SonarCloud analysis
       - uses: SonarSource/sonarqube-scan-action@v6
         env:
